@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import './pages/product.dart';
 
 class Products extends StatelessWidget {
-  final List<String> products;
+  final List<Map<String, String>> products;
+  final Function deleteProduct;
 
-  Products(this.products) {
+  Products(this.products, {this.deleteProduct}) {
     print('[Products Widget] Constructor');
   }
 
@@ -13,66 +14,50 @@ class Products extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset('assets/food.jpg'),
-          Text(products[index]),
+          Image.asset(products[index]['image']),
+          Text(products[index]['title']),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
                 child: Text('Details'),
-                onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ProductPage(),
-                      ),
-                    ),
+                onPressed: () => Navigator
+                    .push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ProductPage(
+                        products[index]['title'], products[index]['image']),
+                  ),
+                )
+                    .then((bool value) {
+                  if (value) {
+                    deleteProduct(index);
+                  }
+                }),
               )
             ],
           )
-        ], //<Widget>[]
-      ), //Column
-    ); //Card),)
+        ],
+      ),
+    );
   }
 
-  /*return Center(
-      child: Card(
-
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: (){
-            print('Card tapped');
-          },
-          child: Container(
-            width: 300,
-            height: 100,
-            child: Column(
-              children: <Widget>[
-                Image.asset('assets/food.jpg'),
-                Text(products[index])
-              ], //<Widget>[]
-            ),
-          ),
-        ),*/
-
   Widget _buildProductList() {
-    Widget productCard;
+    Widget productCards;
     if (products.length > 0) {
-      productCard = ListView.builder(
+      productCards = ListView.builder(
         itemBuilder: _buildProductItem,
         itemCount: products.length,
       );
     } else {
-      /*productCard = Center(
-        child: Text('No Products found, PLease add somr'),);*/
-      productCard = Container();
+      productCards = Container();
     }
-    return productCard;
+    return productCards;
   }
 
   @override
   Widget build(BuildContext context) {
-    print('[Products Widget] Build');
-    // TODO: implement build
+    print('[Products Widget] build()');
     return _buildProductList();
   }
 }
