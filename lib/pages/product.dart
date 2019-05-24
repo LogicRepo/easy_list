@@ -8,13 +8,13 @@ class ProductPage extends StatelessWidget {
 
   ProductPage(this.title, this.imageUrl);
 
-  _showWarningDialog(BuildContext context){
+  _showWarningDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Are you Sure ?'),
-            content: Text('This action can not be undone!'),
+            title: Text('Are you sure?'),
+            content: Text('This action cannot be undone!'),
             actions: <Widget>[
               FlatButton(
                 child: Text('DISCARD'),
